@@ -1,6 +1,6 @@
 # Rust Identicon
 [<img src="https://badges.ws/badge/Built_with_Rust-000000?logo=rust" alt="Built with Rust" />](https://www.rust-lang.org)
-<img src="https://badges.ws/badge/testing-experimental-ff0000">
+<img src="https://badges.ws/badge/state-experimental-ff0000">
 
 <img width="90%" alt="image" src="https://github.com/user-attachments/assets/e4270931-eb25-4915-89d8-095d6606a1f9" />
 
