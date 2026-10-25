@@ -26,6 +26,7 @@ Options:
   -s, --size <SIZE>    [default: 5]
   -x, --scale <SCALE>  [default: 64]
   -i, --input <INPUT>  [default: 1024]
+  -a, --alpha <ALPHA>  [default: 0.3]
   -h, --help           Print help
   -V, --version        Print version
 ```
