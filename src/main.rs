@@ -4,12 +4,14 @@ use png::{Encoder, ColorType, BitDepth};
 use clap::Parser;
 
 #[derive(Parser, Debug)]
-#[command(name = "identicon", version, about)]
+#[command(name = "identicon-rs", version, about)]
 struct Args {
     #[arg(short = 's', long = "size", default_value_t = 5)]
     size: usize,
     #[arg(short = 'x', long = "scale", default_value_t = 64)]
     scale: u32,
+    #[arg(short = 'i', long = "input", default_value_t = 1024)]
+    input: u32,
 }
 
 fn get_hash(bs: &[u8]) -> u32 {
@@ -111,8 +113,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let args = Args::parse();
 
     let mut buf = Vec::new();
-    let cap = args.size * args.size + 32;
+
+    let cap = args.input;
     let _ = io::stdin().take(cap as u64).read_to_end(&mut buf)?;
+    if buf.len() < 256 {
+        eprintln!("warning: Only {} bytes were taken for identicon generation.", buf.len());
+    }
     let hash = get_hash(&buf);
     let hue = hash % 360;
     let grid = build_grid(hash, args.size);
