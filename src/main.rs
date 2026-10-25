@@ -12,6 +12,8 @@ struct Args {
     scale: u32,
     #[arg(short = 'i', long = "input", default_value_t = 1024)]
     input: u32,
+    #[arg(short = 'a', long = "alpha", default_value_t = 0.30)]
+    alpha: f32,
 }
 
 fn get_hash(bs: &[u8]) -> u32 {
@@ -69,11 +71,11 @@ fn build_grid(h: u32, s: usize) -> Vec<Vec<bool>> {
     grid
 }
 
-fn grid_to_img(grid: &[Vec<bool>], hue: u32, scale: u32) -> RgbImage {
+fn grid_to_img(grid: &[Vec<bool>], hue: u32, scale: u32, bg_alpha: f32) -> RgbImage {
     let h = grid.len() as u32;
     let w = grid[0].len() as u32;
     let on = hue_to_rgb(hue);
-    let bg_alpha = 0.30f32;
+    // let bg_alpha = 0.30f32;
     let bg = [
         (on[0] as f32 * bg_alpha + 255.0 * (1.0 - bg_alpha)).round() as u8,
         (on[1] as f32 * bg_alpha + 255.0 * (1.0 - bg_alpha)).round() as u8,
@@ -125,7 +127,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     eprintln!("dbg;b={};h=0x{:08x};hue={}", buf.len(), hash, hue);
 
-    let img = grid_to_img(&grid, hue, args.scale);
+    let img = grid_to_img(&grid, hue, args.scale, args.alpha);
     write_stdout(&img)?;
 
     Ok(())
