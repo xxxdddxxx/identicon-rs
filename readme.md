@@ -6,10 +6,7 @@ Requirements:
 Rust
 Cargo
 Git
-<<<<<<< HEAD
 Feh (Optional)
-=======
->>>>>>> 04c91a2fffa54ed075265c9876ea86fd2c489c67
 ```
 ```sh
 git clone https://github.com/xxxdddxxx/identicon-rs.git
@@ -25,10 +22,7 @@ Usage: identicon-rs [OPTIONS]
 Options:
   -s, --size <SIZE>    [default: 5]
   -x, --scale <SCALE>  [default: 64]
-<<<<<<< HEAD
   -i, --input <INPUT>  [default: 1024]
-=======
->>>>>>> 04c91a2fffa54ed075265c9876ea86fd2c489c67
   -h, --help           Print help
   -V, --version        Print version
 ```
@@ -36,15 +30,9 @@ Options:
 -
 ```sh
 user@laptop:~/identicon-rs/target/release$ head -n 64 /dev/urandom | ./identicon-rs -s 9 | feh -
-<<<<<<< HEAD
 dbg;b=1024;h=0x9a92aa3c;hue=260
 ```
-Where the information printed is the debugging information being `b` the maximum buffer input which can be configured with the `-i` flag, `h` the generated hash and `hue` the corresponding color.
-=======
-dbg;b=81;h=0x9a92aa3c;hue=260
-```
 Where the information printed is the debugging information being `b` the maximum buffer input, `h` the generated hash and `hue` the corresponding color.
->>>>>>> 04c91a2fffa54ed075265c9876ea86fd2c489c67
 
 `Result`
 ---
