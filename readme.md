@@ -1,4 +1,7 @@
 # Rust Identicon
+[<img src="https://badges.ws/badge/Built_with_Rust-000000?logo=rust" alt="Built with Rust" />](https://www.rust-lang.org)
+<img src="https://badges.ws/badge/testing-experimental-ff0000">
+
 Linux tool for identicon generation. The tool takes an input buffer from which it generates a unique identicon based off the input. Useful for generating identicons for files, folders or general purpose.
 ## Installation
 Requirements:
