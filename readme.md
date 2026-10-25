@@ -49,5 +49,5 @@ Where the information printed is the debugging information being `b` the maximum
 ---
 
 # TO DO
-- [ ] Reduce collision changing `u32` hash to a `u64`
+- [x] Reduce collision changing `u32` hash to a `u64`
 - [ ] Add JPG and SVG support

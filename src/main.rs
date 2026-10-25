@@ -16,11 +16,19 @@ struct Args {
     alpha: f32,
 }
 
-fn get_hash(bs: &[u8]) -> u32 {
-    let mut h: u32 = 15641; // 0x7a696f6e697374 implementation fingerprint
+fn get_hash(bs: &[u8]) -> u64 {
+    let mut h: u64 = 0x7a696f6e697365;
     for &b in bs {
-        h = h.wrapping_shl(5).wrapping_add(h).wrapping_add(b as u32);
+        h = h.wrapping_shl(5).wrapping_add(h).wrapping_add(b as u64);
     }
+
+    /*
+                        Splitmix64
+    https://rosettacode.org/wiki/Pseudo-random_numbers/Splitmix64
+    */
+    h ^= h >> 30;h = h.wrapping_mul(0xbf58476d1ce4e5b9);
+    h ^= 27;h = h.wrapping_mul(0x94d049bb133111eb);
+    h ^= h >> 31;
     h
 }
 
@@ -43,13 +51,15 @@ fn hue_to_rgb(hue: u32) -> [u8; 3] {
     ]
 }
 
-fn build_grid(h: u32, s: usize) -> Vec<Vec<bool>> {
+fn build_grid(h: u64, s: usize) -> Vec<Vec<bool>> {
     let mut grid = Vec::with_capacity(s); // as the size is n*n there will be n rows or entries
-    let mut seed = h;
+
+    // also from splitmix64
+    let mut seed = if h == 0 { 0x9e3779b97f4a7c15 } else { h };
     let mut nxb = || { 
         seed^=seed.wrapping_shl(13);
-        seed^=seed.wrapping_shr(17);
-        seed^=seed.wrapping_shl(5);
+        seed^=seed.wrapping_shr(7);
+        seed^=seed.wrapping_shl(17);
         (seed & 1) == 1
     };
 
@@ -122,7 +132,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         eprintln!("warning: Only {} bytes were taken for identicon generation.", buf.len());
     }
     let hash = get_hash(&buf);
-    let hue = hash % 360;
+    let hue = (hash % 360) as u32;
     let grid = build_grid(hash, args.size);
 
     eprintln!("dbg;b={};h=0x{:08x};hue={}", buf.len(), hash, hue);
