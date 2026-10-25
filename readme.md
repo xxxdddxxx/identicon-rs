@@ -43,3 +43,9 @@ Where the information printed is the debugging information being `b` the maximum
 <img width="33%" alt="image" src="https://github.com/user-attachments/assets/bc087c81-e8bc-4a59-9c7a-ad6a5a39c88a" />
 <img width="33%" alt="image" src="https://github.com/user-attachments/assets/695e0c1f-8f9a-4d92-855d-b26efe0795eb" />
 <img width="33%" alt="image" src="https://github.com/user-attachments/assets/83cc9a7f-0df2-4f39-8f70-2ddfa125b06a" />
+
+---
+
+# TO DO
+- [ ] Reduce collision changing `u32` hash to a `u64`
+- [ ] Add JPG and SVG support
