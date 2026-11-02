@@ -3,6 +3,29 @@ use image::{Rgb, RgbImage};
 use png::{Encoder, ColorType, BitDepth};
 use clap::Parser;
 
+struct Identicon {
+    hash: u64,
+    hue: u32,
+    grid: Vec<Vec<bool>>,
+    image: RgbImage,
+}
+
+impl Identicon {
+    fn new(data: &Vec<u8>, size: usize, scale: u32, alpha: f32) -> Self {
+        let hash = get_hash(&data);
+        let hue = (hash % 360) as u32;
+        let grid = build_grid(hash, size);
+        let image = grid_to_img(&grid, hue, scale, alpha);
+        Self { hash, hue, grid, image }
+    }
+    fn hue(&self) -> u32 {
+        (self.hash % 360) as u32
+    }
+    fn hash(&self) -> u64 {
+        self.hash
+    }
+}
+
 #[derive(Parser, Debug)]
 #[command(name = "identicon-rs", version, about)]
 struct Args {
@@ -85,7 +108,7 @@ fn grid_to_img(grid: &[Vec<bool>], hue: u32, scale: u32, bg_alpha: f32) -> RgbIm
     let h = grid.len() as u32;
     let w = grid[0].len() as u32;
     let on = hue_to_rgb(hue);
-    // let bg_alpha = 0.30f32;
+
     let bg = [
         (on[0] as f32 * bg_alpha + 255.0 * (1.0 - bg_alpha)).round() as u8,
         (on[1] as f32 * bg_alpha + 255.0 * (1.0 - bg_alpha)).round() as u8,
@@ -131,14 +154,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if buf.len() < 256 {
         eprintln!("warning: Only {} bytes were taken for identicon generation.", buf.len());
     }
-    let hash = get_hash(&buf);
-    let hue = (hash % 360) as u32;
-    let grid = build_grid(hash, args.size);
 
-    eprintln!("dbg;b={};h=0x{:08x};hue={}", buf.len(), hash, hue);
+    let identicon: Identicon = Identicon::new(&buf, args.size, args.scale, args.alpha);
 
-    let img = grid_to_img(&grid, hue, args.scale, args.alpha);
-    write_stdout(&img)?;
+    eprintln!("dbg;b={};h=0x{:08x};hue={}", buf.len(), identicon.hash, identicon.hue);
+
+    write_stdout(&identicon.image)?;
 
     Ok(())
 }
